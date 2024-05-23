@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { AlignmentItems, dataItem, monkdata } from '../data';
-import { Avatar, Button, Card, Image } from 'antd';
+import {  AlignVotingItem, MockAlignmentItems, dataItem, mockTopic } from '../data';
+import { Avatar, Button, Card, Image, List } from 'antd';
 import axios from 'axios';
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 
 
 export default function Home() {
@@ -15,30 +16,34 @@ export default function Home() {
   }
   const [tab, setTab] = useState<Tabs>(Tabs.TopicList);
   const [choice, setChoice] = useState<dataItem>();
-  const [alignmentItems, setAlignmentItems] = useState<AlignmentItems>([]);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [alignData, setAlignData] = useState<AlignVotingItem[]>([]);
 
   function selectTopic(item: dataItem) {
     console.log(item);
     setChoice(item);
-  
-    // Use axios to fetch data from an API
-    axios.get(`http://localhost:5000/read?key=`+item.title.replace(" ", "_"))  // Assuming 'item.id' identifies the data needed from the API
-      .then(response => {
-        console.log('Data fetched:', response.data);
-        
-        console.log('Data fetched:', Array.isArray(response.data) );
-        // Assuming the response data is the format expected for alignmentItems
-        setAlignmentItems(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-        // Handle errors or set default state if needed
-        setAlignmentItems([]);
-      });
     
     setTab(Tabs.Voting);
+    setCurrentIndex(0);
+  }
+
+  function vote(yes: boolean) {
+    let id = MockAlignmentItems[currentIndex].index;
+    // initialize a new AlignVotingItem
+    const newAlignData: AlignVotingItem = {
+      id: id,
+      vote: yes? 1:0,
+    };
+    setAlignData([...alignData, newAlignData]);
+    console.log('Voted');
+    setCurrentIndex(currentIndex + 1);
   }
   
+  function submit(){
+    console.log('Submitted');
+    console.log(alignData);
+
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center gap-20 p-12">
@@ -55,7 +60,7 @@ export default function Home() {
         {tab == Tabs.TopicList && <div className='flex flex-col w-full gap-10'>
           <h1 style={{ fontSize: '3rem' }}>Topics</h1>
           <div className="flex flex-row flex-wrap justify-center gap-10">
-            {Array.isArray(monkdata) && monkdata.map((item, i) => (
+            {Array.isArray(mockTopic) && mockTopic.map((item, i) => (
               <Card
                 key={i}
                 hoverable
@@ -76,21 +81,42 @@ export default function Home() {
           <h3 style={{ fontSize: '1.5rem' }}>{choice?.description}</h3>
           {/* A Card to contain data for chosen topic */}
           <div className='flex flex-col gap-10'>
-            {alignmentItems.map((item, i) => (
               <Card 
-                key={i}
                 style={{ width: 1000, padding: 20}}
               >
+                {(currentIndex < MockAlignmentItems.length) && (
                 <div className='flex flex-col items-end gap-10'>
-                  <h1>{item.scenarioDescription}</h1>
-                  <h3>{item.statement}</h3>
+                  <h1>{MockAlignmentItems[currentIndex].scenarioDescription}</h1>
+                  <h3>{MockAlignmentItems[currentIndex].statement}</h3>
                   <div className='flex flex-row gap-10'>
-                    <Button onClick={() => { }}>Yes</Button>
-                    <Button onClick={() => { }}>No</Button>
+                    <Button onClick={() => { vote(true) }}>Yes</Button>
+                    <Button onClick={() => { vote(false) }}>No</Button>
                   </div>
-                </div>
+                </div>)}
+                {(currentIndex >= MockAlignmentItems.length) && (
+                  <div className='flex w-full flex-col items-end gap-10'>
+                    <div className='flex w-full flex-col items-start gap-10'>
+                      <h1 style={{fontSize: '1.2rem'}}>🎉Thank you for voting!</h1>
+                      <h3>😎  Here are your votes:</h3>
+                      <List
+                        style={{width: 900}}
+                        itemLayout="horizontal"
+                        dataSource={alignData}
+                        renderItem={(item, index) => (
+                          <List.Item>
+                            <List.Item.Meta
+                              title={MockAlignmentItems[index].index}
+                              description={MockAlignmentItems[index].statement}
+                            />
+                            <div>{item.vote ? (<CheckCircleTwoTone />) : (<CloseCircleTwoTone />)}</div>
+                          </List.Item>
+                        )}
+                      />
+                    </div>
+                    <Button onClick={() => { submit() }}>Submit</Button>
+                  </div>
+                )}
               </Card>
-            ))}
           </div>
           <div className='flex flex-row gap-10'>
             <button onClick={() => { setTab(Tabs.TopicList) }}> {"\< Back"} </button>

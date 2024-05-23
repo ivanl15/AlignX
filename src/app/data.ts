@@ -9,7 +9,7 @@ export class dataItem {
 }
 
 
-export const monkdata = [
+export const mockTopic = [
     {
         "title": "Donald Trump",
         "description": "The 45th president of the United States",
@@ -125,3 +125,13 @@ export const MockAlignmentItems = [
         "statement": "\"Thank you very much folks! I'm telling ya', this guy [Joe] doesn't know how good we've got it here on American soil. Our economy was thriving under my administration before all these shutdowns and lockdown nonsense started happening.\" -"
     }
 ];
+
+
+export class AlignVotingItem {
+    id: number;
+    vote: number;
+    constructor(id: number, vote: number) {
+        this.id = id;
+        this.vote = vote;
+    }
+}
