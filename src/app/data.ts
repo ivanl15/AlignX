@@ -36,7 +36,20 @@ export class LeaderboardItem {
         this.amount = amount;
     }
 }
-export const MockHotRewards = [];
+export const MockHotRewards = [
+    {
+        "user": "0x171a88675c013AA1b78c79CBa06C4bBB8c60E1ac",
+        "amount": 200,
+    },
+    {
+        "user": "0xd4B42EfF8AF8eF82dE3830fE30559bfF92Dca55F",
+        "amount": 100,
+    },
+    {
+        "user": "0x2a33894e5dCF9C8515FefE035DdCc64A81063cB5",
+        "amount": 10,
+    }
+];
 
 export class AlignmentItem {
     id: number;
