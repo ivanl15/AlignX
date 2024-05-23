@@ -78,6 +78,7 @@ export default function Home() {
           <div className='flex flex-col gap-10'>
             {alignmentItems.map((item, i) => (
               <Card 
+                key={i}
                 style={{ width: 1000, padding: 20}}
               >
                 <div className='flex flex-col items-end gap-10'>
