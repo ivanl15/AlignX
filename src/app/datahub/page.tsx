@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { AlignmentItems, dataItem, monkdata } from '../data';
-import { Avatar, Button, Card } from 'antd';
+import { Avatar, Button, Card, Image } from 'antd';
 import axios from 'axios';
 
 
@@ -60,7 +60,7 @@ export default function Home() {
                 key={i}
                 hoverable
                 style={{ width: 240 }}
-                cover={<img alt="example" src={"https://noun-api.com/beta/pfp?name=" + item.title} />}
+                cover={<Image alt={item.title+'\'s Avatar'} src={"https://noun-api.com/beta/pfp?name=" + item.title} />}
               >
                 <Meta title={item.title} description={item.description} />
                 <Button onClick={() => { selectTopic(item) }}>Vote</Button>
