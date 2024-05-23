@@ -19,10 +19,6 @@ export default function RootLayout({
 }>) {
   const initialState = cookieToInitialState(config, headers().get('cookie'))
   return (
-    <html lang="en">
-      <body>
-        <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
-      </body>
-    </html>
+    <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
   )
 }

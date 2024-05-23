@@ -43,6 +43,22 @@ export const MockHotRewards = [{
     money: '3',
 }];
 
+export class AlignmentItem {
+    id: number;
+    topicTitle: string;
+    topicImg: string;
+    scenarioDescription: string;
+    statement: string;
+    constructor(id: number, topicTitle: string, topicImg: string, scenarioDescription: string, statement: string) {
+        this.id = id;
+        this.topicTitle = topicTitle;
+        this.topicImg = topicImg;
+        this.scenarioDescription = scenarioDescription;
+        this.statement = statement;
+    }
+}
+
+export type AlignmentItems = AlignmentItem[];
 
 export const MockAlignmentItems = [
 //     {

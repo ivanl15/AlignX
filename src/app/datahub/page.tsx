@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { MockAlignmentItems, dataItem, monkdata } from '../data';
+import { AlignmentItems, dataItem, monkdata } from '../data';
 import { Avatar, Button, Card } from 'antd';
+import axios from 'axios';
 
 
 export default function Home() {
@@ -14,12 +15,30 @@ export default function Home() {
   }
   const [tab, setTab] = useState<Tabs>(Tabs.TopicList);
   const [choice, setChoice] = useState<dataItem>();
+  const [alignmentItems, setAlignmentItems] = useState<AlignmentItems>([]);
 
   function selectTopic(item: dataItem) {
     console.log(item);
     setChoice(item);
+  
+    // Use axios to fetch data from an API
+    axios.get(`http://localhost:5000/read?key=`+item.title.replace(" ", "_"))  // Assuming 'item.id' identifies the data needed from the API
+      .then(response => {
+        console.log('Data fetched:', response.data);
+        
+        console.log('Data fetched:', Array.isArray(response.data) );
+        // Assuming the response data is the format expected for alignmentItems
+        setAlignmentItems(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        // Handle errors or set default state if needed
+        setAlignmentItems([]);
+      });
+    
     setTab(Tabs.Voting);
   }
+  
 
   return (
     <main className="flex min-h-screen flex-col items-center gap-20 p-12">
@@ -57,7 +76,7 @@ export default function Home() {
           <h3 style={{ fontSize: '1.5rem' }}>{choice?.description}</h3>
           {/* A Card to contain data for chosen topic */}
           <div className='flex flex-col gap-10'>
-            {MockAlignmentItems.map((item, i) => (
+            {alignmentItems.map((item, i) => (
               <Card 
                 style={{ width: 1000, padding: 20}}
               >
