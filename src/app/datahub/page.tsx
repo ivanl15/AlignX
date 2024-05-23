@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { MockAlignmentItems, dataItem, monkdata } from './data';
+import { MockAlignmentItems, dataItem, monkdata } from '../data';
 import { Avatar, Button, Card } from 'antd';
 
 
