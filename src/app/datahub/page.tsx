@@ -6,10 +6,13 @@ import {  AlignVotingItem, MockAlignmentItems, dataItem, mockTopic } from '../da
 import { Avatar, Button, Card, Image, List } from 'antd';
 import axios from 'axios';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
+import { useReadContract, useWriteContract } from 'wagmi';
+import { abi } from './abi';
 
 
 export default function Home() {
   const { Meta } = Card;
+  const { writeContract } = useWriteContract();
   enum Tabs {
     TopicList,
     Voting
@@ -42,7 +45,19 @@ export default function Home() {
   function submit(){
     console.log('Submitted');
     console.log(alignData);
-
+    const result = writeContract({ 
+      abi,
+      address: '0xc987ccbB0a7709B601AC72e91a1bd04e9068baE7',
+      functionName: 'castVote',
+      args: [
+        // dataIDs_
+        alignData.map((item) => item.id),
+        // votes_
+        alignData.map((item) => item.vote),
+      ],
+   })
+    console.log(result);
+    setTab(Tabs.TopicList);
   }
 
   return (
