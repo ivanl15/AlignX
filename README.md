@@ -5,7 +5,7 @@ The demo website: https://align-x-ui-phi.vercel.app/
 
 The demo video: https://youtu.be/InextBx7Xo4
 
-## Codes
+## Codes Availability
 The codes of the frontend is in the current repo.
 
 The contracts are available [here](https://github.com/AlignX-Lab/AlignX-contract).
